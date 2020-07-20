@@ -1,0 +1,24 @@
+<div>
+    <button (click)="loadDataFromApiUsingWebWorker()">Click Here!</button>
+    <table style="width: 100%">
+        <thead>
+            <tr>
+                <td>UserId</td>
+                <td>Id</td>
+                <td>Title</td>
+                <td>Body</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let article of articles">
+                <td>{{article.userId}}</td>
+                <td>{{article.id}}</td>
+                <td>{{article.title}}</td>
+                <td>{{article.body}}</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+</div>
