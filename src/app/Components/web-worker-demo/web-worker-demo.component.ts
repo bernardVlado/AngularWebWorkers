@@ -1,32 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-web-worker-demo',
   templateUrl: './web-worker-demo.component.html',
   styleUrls: ['./web-worker-demo.component.css']
 })
-export class WebWorkerDemoComponent implements OnInit {
+export class WebWorkerDemoComponent implements OnDestroy {
   private baseUrl: String = "http://jsonplaceholder.typicode.com/posts";
   public articles;
-
+  private worker: Worker;
   constructor() { }
 
-  ngOnInit() {  }
+  ngOnDestroy() {
+    this.worker.terminate();
+  }
 
   loadDataFromApiUsingWebWorker() {
     if (typeof Worker !== 'undefined') {
 
       // Create a new Web Worker
-      const worker = new Worker('../../web-worker-demo.worker', { type: 'module' });
+      this.worker = new Worker('../../web-worker-demo.worker', { type: 'module' });
 
       // Receiving data from Web Worker
-      worker.onmessage = ({ data }) => {
+      this.worker.onmessage = ({ data }) => {
         this.articles = data;
         console.log("Web Worker responded: ", this.articles);
       };
 
       // sending data to Web Worker
-      worker.postMessage(this.baseUrl);
+      this.worker.postMessage(this.baseUrl);
 
     } else {
 
